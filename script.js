@@ -16,26 +16,30 @@ function gridGen() {
       const div = document.createElement('div');
       div.classList.add(`x-${i}`, `y-${j}`, `square`);
       container.appendChild(div);
-  
-      // Add onmousemove event handler to each div
-      div.onmousemove = function(event) {
-        event.stopPropagation;
-        div.classList.add(`blue`);
-                };
             };
         };
     };
   
 
 function playerGen(){
-    const startSquareX = Math.floor(Math.random() * count);
-    const startSquareY = Math.floor(Math.random() * count);
-    let startSquare = document.querySelector(`.x-${startSquareX}.y-${startSquareY}`);
-    startSquare.classList.add(`blue`);
+    let playerSquareX = Math.floor(Math.random() * count);
+    let playerSquareY = Math.floor(Math.random() * count);
+    let startSquare = document.querySelector(`.x-${playerSquareX}.y-${playerSquareY}`);
+    startSquare.classList.add(`player`);
 };
 
 function appleGen(){
-
+    let availibleSquare = false;
+    while(availibleSquare == false){
+        let appleSquareX = Math.floor(Math.random() * count);
+        let appleSquareY = Math.floor(Math.random() * count);
+        let appleSquare = document.querySelector(`.x-${appleSquareX}.y-${appleSquareY}`);
+        //script to not spawn on player
+        if(!appleSquare.classList.contains('player')){
+            appleSquare.classList.add(`apple`);
+            availibleSquare = true;
+        };
+    };
 };
 
 function movment(){
@@ -48,5 +52,5 @@ function frameRate(){
   
   
 gridGen();
-playerGen()
-console.log(count);
+playerGen();
+appleGen();

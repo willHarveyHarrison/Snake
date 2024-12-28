@@ -17,6 +17,9 @@
     width: 18px;
   }
   
-  .blue{
+  .player{
     background-color: #333333;
+  }
+  .apple{
+    background-color: pink;
   }
