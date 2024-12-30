@@ -45,12 +45,42 @@ function appleGen(){
     };
 };
 
-function move(){
-    // every 1sec move to the right
-    snakeHead = document.querySelector(`.x-${playerSquareX++}.y-${playerSquareY}`);
-    snakeHead.classList.add(`player`);
+function move() {
+    // Move the snake to the right by incrementing X
+    playerSquareY--;  // Increment X position to move right
+
+    // Wrap around logic for X coordinate (horizontal)
+    if (playerSquareX >= count) {
+        playerSquareX = 0; // Wrap around to the left side
+    }
+
+    // Wrap around logic for Y coordinate (vertical)
+    if (playerSquareY >= count) {
+        playerSquareY = 0; // Wrap around to the top
+    }
+
+    if (playerSquareY < 0) {
+        playerSquareY = count - 1; // Wrap around to the bottom
+    }
+
+    if (playerSquareX < 0) {
+        playerSquareX = count - 1; // Wrap around to the right
+    }
+
+    // Get the new snake head position based on the updated coordinates
+    snakeHead = document.querySelector(`.x-${playerSquareX}.y-${playerSquareY}`);
+
+    // Remove the 'player' class from the old position
+    if (snakeHead) {
+        snakeHead.classList.remove('player');
+    }
+
+    // Add the 'player' class to the new position (new snake head)
+    snakeHead.classList.add('player');
+
+    // Debugging log to check the current class list of the snake head
     console.log(snakeHead.classList[0]);
-};
+}
 
 function frameRate(){
 
