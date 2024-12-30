@@ -1,4 +1,7 @@
 let count = 0;
+let snakeHead;
+let playerSquareX;
+let playerSquareY;
 
 function gridGen() {
     const size = document.getElementById('size');
@@ -22,10 +25,10 @@ function gridGen() {
   
 
 function playerGen(){
-    let playerSquareX = Math.floor(Math.random() * count);
-    let playerSquareY = Math.floor(Math.random() * count);
-    let startSquare = document.querySelector(`.x-${playerSquareX}.y-${playerSquareY}`);
-    startSquare.classList.add(`player`);
+    playerSquareX = Math.floor(Math.random() * count);
+    playerSquareY = Math.floor(Math.random() * count);
+    snakeHead = document.querySelector(`.x-${playerSquareX}.y-${playerSquareY}`);
+    snakeHead.classList.add(`player`);
 };
 
 function appleGen(){
@@ -42,15 +45,35 @@ function appleGen(){
     };
 };
 
-function movment(){
-
+function move(){
+    // every 1sec move to the right
+    snakeHead = document.querySelector(`.x-${playerSquareX++}.y-${playerSquareY}`);
+    snakeHead.classList.add(`player`);
+    console.log(snakeHead.classList[0]);
 };
 
 function frameRate(){
 
 };
-  
+
+function snakeLength(){
+    // add one to snake length
+    // leave one extra square
+};
+
+
   
 gridGen();
 playerGen();
 appleGen();
+
+var mainLoopId = setInterval(function(){
+    // Do your update stuff...
+    move();
+}, 500);
+
+mainLoopId;
+// Stop the loop after 3 seconds
+setTimeout(function(){
+    clearInterval(mainLoopId);
+}, 3000); // Stops the loop after 3000ms (3 seconds)
