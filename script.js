@@ -1,8 +1,16 @@
 let count = 0;
-let snakeHead;
 let playerSquareX;
 let playerSquareY;
 let snakeBody = [];
+let lastKeyPressed = "ArrowUp";
+
+// Function to handle keydown event
+function handleKeyDown(event) {
+    lastKeyPressed = event.key; // Store the key that was pressed
+}
+
+// Attach event listener for the 'keydown' event
+window.addEventListener('keydown', handleKeyDown);
 
 function gridGen() {
     const size = document.getElementById('size');
@@ -26,9 +34,9 @@ function gridGen() {
   
 
 function playerGen(){
-    playerSquareX = Math.floor(Math.random() * 1);
+    playerSquareX = Math.floor(Math.random() * count);
     playerSquareY = Math.floor(Math.random() * count);
-    snakeHead = document.querySelector(`.x-${playerSquareX}.y-${playerSquareY}`);
+    let snakeHead = document.querySelector(`.x-${playerSquareX}.y-${playerSquareY}`);
     snakeHead.classList.add(`player`);
     snakeBody.push(snakeHead);
 };
@@ -40,7 +48,7 @@ function appleGen(appleSquare){
     }
     let availibleSquare = false;
     while(availibleSquare == false){
-        let appleSquareX = Math.floor(Math.random() * 1);
+        let appleSquareX = Math.floor(Math.random() * count);
         let appleSquareY = Math.floor(Math.random() * count);
         let appleSquare = document.querySelector(`.x-${appleSquareX}.y-${appleSquareY}`);
         //script to not spawn on player
@@ -51,9 +59,24 @@ function appleGen(appleSquare){
     };
 };
 
-function move() {
+function move(lastKeyPressed) {
     // Move the snake to the right by incrementing X
-    playerSquareY--;  // Increment X position to move right
+      // Increment X position to move right
+    console.log(lastKeyPressed)
+    switch(lastKeyPressed){
+        case 'ArrowUp':
+            playerSquareY--;
+            break;
+        case 'ArrowDown':
+            playerSquareY++;
+            break;
+        case 'ArrowLeft':
+            playerSquareX--;
+            break;
+        case 'ArrowRight':
+            playerSquareX++;
+            break;
+    }
 
     // Wrap around logic for X coordinate (horizontal)
     if (playerSquareX >= count) {
@@ -94,14 +117,6 @@ function snakeBodyFunction(nextMove, switchFlag) {
     console.log(switchFlag)
     console.log(snakeBody);
 }
-
-
-function snakeLength(){
-    // add one to snake length
-    // leave one extra square
-};
-
-
   
 gridGen();
 playerGen();
@@ -109,10 +124,10 @@ appleGen();
 
 var gameStart = setInterval(function(){
     // Do your update stuff...
-    move();
-}, 500);
+    move(lastKeyPressed);
+}, 200);
 
 // Stop the loop after 3 seconds
 setTimeout(function(){
     clearInterval(gameStart);
-}, 3000); // Stops the loop after 3000ms (3 seconds)
+}, 300000); // Stops the loop after 3000ms (3 seconds)
