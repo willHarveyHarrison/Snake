@@ -2,6 +2,7 @@ let count = 0;
 let snakeHead;
 let playerSquareX;
 let playerSquareY;
+let snakeBody = [];
 
 function gridGen() {
     const size = document.getElementById('size');
@@ -25,16 +26,17 @@ function gridGen() {
   
 
 function playerGen(){
-    playerSquareX = Math.floor(Math.random() * count);
+    playerSquareX = Math.floor(Math.random() * 1);
     playerSquareY = Math.floor(Math.random() * count);
     snakeHead = document.querySelector(`.x-${playerSquareX}.y-${playerSquareY}`);
     snakeHead.classList.add(`player`);
+    snakeBody.push(snakeHead);
 };
 
 function appleGen(){
     let availibleSquare = false;
     while(availibleSquare == false){
-        let appleSquareX = Math.floor(Math.random() * count);
+        let appleSquareX = Math.floor(Math.random() * 1);
         let appleSquareY = Math.floor(Math.random() * count);
         let appleSquare = document.querySelector(`.x-${appleSquareX}.y-${appleSquareY}`);
         //script to not spawn on player
@@ -67,24 +69,27 @@ function move() {
         playerSquareX = count - 1; // Wrap around to the right
     }
 
-    // Get the new snake head position based on the updated coordinates
-    snakeHead = document.querySelector(`.x-${playerSquareX}.y-${playerSquareY}`);
-
     // Remove the 'player' class from the old position
-    if (snakeHead) {
-        snakeHead.classList.remove('player');
+    nextMove = document.querySelector(`.x-${playerSquareX}.y-${playerSquareY}`)
+    if (nextMove.classList.contains('apple')){
+        snakeBodyFunction(nextMove, false);
+    } else {
+        snakeBodyFunction(nextMove, true);
     }
-
-    // Add the 'player' class to the new position (new snake head)
-    snakeHead.classList.add('player');
-
-    // Debugging log to check the current class list of the snake head
-    console.log(snakeHead.classList[0]);
 }
 
-function frameRate(){
+function snakeBodyFunction(nextMove, switchFlag) {
+    // Add next move to the snake body
+    snakeBody.push(nextMove);
+    nextMove.classList.add('player');
+    if (switchFlag) {
+        let snakeTail = snakeBody.shift();  // Remove from the front (tail)
+        snakeTail.classList.remove('player'); // Remove 'player' class from the tail
+    }
+    console.log(switchFlag)
+    console.log(snakeBody);
+}
 
-};
 
 function snakeLength(){
     // add one to snake length
@@ -97,13 +102,12 @@ gridGen();
 playerGen();
 appleGen();
 
-var mainLoopId = setInterval(function(){
+var gameStart = setInterval(function(){
     // Do your update stuff...
     move();
 }, 500);
 
-mainLoopId;
 // Stop the loop after 3 seconds
 setTimeout(function(){
-    clearInterval(mainLoopId);
+    clearInterval(gameStart);
 }, 3000); // Stops the loop after 3000ms (3 seconds)
