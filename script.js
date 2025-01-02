@@ -33,7 +33,11 @@ function playerGen(){
     snakeBody.push(snakeHead);
 };
 
-function appleGen(){
+function appleGen(appleSquare){
+    // clear apples
+    if(appleSquare){
+        appleSquare.classList.remove('apple');
+    }
     let availibleSquare = false;
     while(availibleSquare == false){
         let appleSquareX = Math.floor(Math.random() * 1);
@@ -73,6 +77,7 @@ function move() {
     nextMove = document.querySelector(`.x-${playerSquareX}.y-${playerSquareY}`)
     if (nextMove.classList.contains('apple')){
         snakeBodyFunction(nextMove, false);
+        appleGen(nextMove);
     } else {
         snakeBodyFunction(nextMove, true);
     }
