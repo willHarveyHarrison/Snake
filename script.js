@@ -51,8 +51,8 @@ function appleGen(appleSquare){
     }
     let availibleSquare = false;
     while(availibleSquare == false){
-        let appleSquareX = Math.floor(Math.random() * count);
-        let appleSquareY = Math.floor(Math.random() * count);
+        let appleSquareX = Math.floor(Math.random() * count + 1);
+        let appleSquareY = Math.floor(Math.random() * count + 1);
         let appleSquare = document.querySelector(`.x-${appleSquareX}.y-${appleSquareY}`);
         //script to not spawn on player
         if(!appleSquare.classList.contains('player')){
@@ -102,11 +102,11 @@ function move(lastKeyPressed) {
     }
 
     if (playerSquareY < 1) {
-        playerSquareY = count - 1; // Wrap around to the bottom
+        playerSquareY = count; // Wrap around to the bottom
     }
 
     if (playerSquareX < 1) {
-        playerSquareX = count - 1; // Wrap around to the right
+        playerSquareX = count; // Wrap around to the right
     }
 
     //define the next move
@@ -152,7 +152,7 @@ function theEnd(){
 
 
 
-    
+
     const O = [
         [0, 4], [1, 4], [2, 4], [3, 4], [4, 4],
         [0, 3],                             [4, 3],
@@ -216,6 +216,5 @@ function gameStart(){
 }
 
 gameStart();
-endScreen();
 
 // Stop the loop after 3 seconds
