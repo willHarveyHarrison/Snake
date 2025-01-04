@@ -37,8 +37,8 @@ function gridGen() {
   
 
 function playerGen(){
-    playerSquareX = Math.floor(Math.random() * count);
-    playerSquareY = Math.floor(Math.random() * count);
+    playerSquareX = Math.floor(Math.random() * count + 1);
+    playerSquareY = Math.floor(Math.random() * count + 1);
     let snakeHead = document.querySelector(`.x-${playerSquareX}.y-${playerSquareY}`);
     snakeHead.classList.add(`player`);
     snakeBody = [snakeHead];
@@ -138,20 +138,64 @@ function endScreen() {
     console.log('game end');
     setTimeout(function(){
         gameStart();
-    }, 100000); // Stops the loop after 3000ms (3 seconds)
-
+    }, 4000); // Stops the loop after 3000ms (3 seconds)
+S
 }
 
 function theEnd(){
+    // Clear the grid
+    document.querySelectorAll('.player').forEach(cell => {
+        cell.classList.remove('player');
+    });
 
+    document.querySelectorAll('.apple').forEach(cell => {
+        cell.classList.remove('apple');
+    });
 
+    // Coordinates for "GAME"
+    const G = [
+        [0, 4], [1, 4], [2, 4], [3, 4], [4, 4],
+        [0, 3],                             
+        [0, 2],           [2, 2], [3, 2],  [4, 2],
+        [0, 1],                             [4, 1],
+        [0, 0], [1, 0], [2, 0], [3, 0], [4, 0]
+    ];
+    for (const [x, y] of G) {
+        drawCell(2, 18, x, y, 'black'); // Adjust the starting position for "G"
+    }
 
+    const A = [
+        [0, 4], [1, 4], [2, 4], [3, 4], [4, 4],
+        [0, 3],                             [4, 3],
+        [0, 2], [1, 2], [2, 2], [3, 2], [4, 2],
+        [0, 1],                             [4, 1],
+        [0, 0],                             [4, 0]
+    ];
+    for (const [x, y] of A) {
+        drawCell(8, 18, x, y, 'black'); // Adjust the starting position for "A"
+    }
 
+    const M = [
+        [0, 4],                           [4, 4],
+        [0, 3],[1,3],             [3, 3], [4, 3],
+        [0, 2],        [2, 2],            [4, 2],
+        [0, 1],                           [4, 1],
+        [0, 0],                           [4, 0]
+    ];
+    for (const [x, y] of M) {
+        drawCell(14, 18, x, y, 'black'); // Adjust the starting position for "M"
+    }
 
-
-
-
-
+    const E = [
+        [0, 4], [1, 4], [2, 4], [3, 4], [4, 4],
+        [0, 3],
+        [0, 2], [1, 2], [2, 2], [3, 2], [4, 2],
+        [0, 1],
+        [0, 0], [1, 0], [2, 0], [3, 0], [4, 0]
+    ];
+    for (const [x, y] of E) {
+        drawCell(20, 18, x, y, 'black'); // Adjust the starting position for "E"
+    }
 
     const O = [
         [0, 4], [1, 4], [2, 4], [3, 4], [4, 4],
