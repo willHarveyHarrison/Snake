@@ -5,11 +5,12 @@ let snakeBody = [];
 let lastKeyPressed = "ArrowUp";
 var startLoop;
 let lastMove = '';
+let growth = 0;
+let appleCounter = Math.floor(Math.random() * 10);
 
 // Function to handle keydown event
 function handleKeyDown(event) {
     lastKeyPressed = event.key; // Store the key that was pressed
-    console.log(lastKeyPressed)
 }
 
 // Attach event listener for the 'keydown' event
@@ -55,11 +56,35 @@ function appleGen(appleSquare){
         let appleSquareY = Math.floor(Math.random() * count + 1);
         let appleSquare = document.querySelector(`.x-${appleSquareX}.y-${appleSquareY}`);
         //script to not spawn on player
-        if(!appleSquare.classList.contains('player')){
+        if(!appleSquare.classList.contains('player') && !appleSquare.classList.contains('goldenApple')){
             appleSquare.classList.add(`apple`);
             availibleSquare = true;
         };
     };
+};
+
+function goldenAppleGen(appleSquare){
+    appleCounter ++;
+    if (appleCounter == 20){
+        appleSquare = document.querySelector('.goldenApple');
+        if(appleSquare){
+            appleSquare.classList.remove('goldenApple');
+        }
+    }
+    if (appleCounter == 80){
+        let availibleSquare = false;
+        while(availibleSquare == false){
+            let appleSquareX = Math.floor(Math.random() * count + 1);
+            let appleSquareY = Math.floor(Math.random() * count + 1);
+            let appleSquare = document.querySelector(`.x-${appleSquareX}.y-${appleSquareY}`);
+            //script to not spawn on player
+            if(!appleSquare.classList.contains('player') && !appleSquare.classList.contains('apple')){
+                appleSquare.classList.add(`goldenApple`);
+                availibleSquare = true;
+            };
+        };
+        appleCounter = Math.floor(Math.random() * 10);
+    }
 };
 
 function move(lastKeyPressed) {
@@ -91,42 +116,61 @@ function move(lastKeyPressed) {
             break;
     }
 
+    handleBorders()
+
+    //handle next move
+    nextMove = document.querySelector(`.x-${playerSquareX}.y-${playerSquareY}`)
+
+    handlecollisions(nextMove)
+}
+
+function handleBorders(){
     // Wrap around logic for X coordinate (horizontal)
     if (playerSquareX >= count + 1) {
-        playerSquareX = 1; // Wrap around to the left side
+        return playerSquareX = 1; // Wrap around to the left side
     }
 
     // Wrap around logic for Y coordinate (vertical)
     if (playerSquareY >= count + 1) {
-        playerSquareY = 1; // Wrap around to the top
+        return playerSquareY = 1; // Wrap around to the top
     }
 
     if (playerSquareY < 1) {
-        playerSquareY = count; // Wrap around to the bottom
+        return playerSquareY = count; // Wrap around to the bottom
     }
 
     if (playerSquareX < 1) {
-        playerSquareX = count; // Wrap around to the right
-    }
-
-    //define the next move
-    nextMove = document.querySelector(`.x-${playerSquareX}.y-${playerSquareY}`)
-    if (nextMove.classList.contains('player')){
-        endScreen();
-    }
-    if (nextMove.classList.contains('apple')){
-        snakeBodyFunction(nextMove, false);
-        appleGen(nextMove);
-    } else {
-        snakeBodyFunction(nextMove, true);
+        return playerSquareX = count; // Wrap around to the right
     }
 }
 
-function snakeBodyFunction(nextMove, switchFlag) {
+function handlecollisions(){
+    //handle self collision
+    if (nextMove.classList.contains('player')){
+        endScreen();
+    }
+    //handle apple and growth
+    if (nextMove.classList.contains('apple')){
+        growth ++
+        appleGen(nextMove);
+    } else if(nextMove.classList.contains('goldenApple')){
+        growth += 3;
+        let goldenApple = document.getElementsByClassName('goldenApple')[0];
+        goldenApple.classList.remove('goldenApple');
+        goldenAppleGen(nextMove);
+    }
+    //empty space move
+    snakeBodyFunction(nextMove);
+}
+
+function snakeBodyFunction(nextMove) {
     // Add next move to the snake body
     snakeBody.push(nextMove);
     nextMove.classList.add('player');
-    if (switchFlag) {
+    if (growth > 0) {
+        growth--
+        return
+    } else {
         let snakeTail = snakeBody.shift();  // Remove from the front (tail)
         snakeTail.classList.remove('player'); // Remove 'player' class from the tail
     }
@@ -135,11 +179,9 @@ function snakeBodyFunction(nextMove, switchFlag) {
 function endScreen() {
     clearInterval(startLoop);
     theEnd()
-    console.log('game end');
     setTimeout(function(){
         gameStart();
     }, 4000); // Stops the loop after 3000ms (3 seconds)
-S
 }
 
 function theEnd(){
@@ -255,6 +297,7 @@ function gameStart(){
     startLoop = setInterval(function(){
         // Do your update stuff...
         move(lastKeyPressed);
+        goldenAppleGen();
     }, 200);
 
 }
