@@ -58,6 +58,7 @@ function appleGen(appleSquare){
         //script to not spawn on player
         if(!appleSquare.classList.contains('player') && !appleSquare.classList.contains('goldenApple')){
             appleSquare.classList.add(`apple`);
+            
             availibleSquare = true;
         };
     };

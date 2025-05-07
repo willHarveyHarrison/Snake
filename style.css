@@ -21,8 +21,12 @@
     background-color: #333333;
   }
   .apple{
-    background-color: pink;
+    background-repeat:no-repeat;
+    background-position:center;
+    background-image: url(redApple.svg);
   }
   .goldenApple{
-    background-color: gold;
+    background-repeat:no-repeat;
+    background-position:center;
+    background-image: url(goldenApple.svg);
   }
